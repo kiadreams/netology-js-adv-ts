@@ -1,0 +1,9 @@
+/.yarn/**            linguist-vendored
+/.yarn/releases/*    binary
+/.yarn/plugins/**/*  binary
+/.pnp.*              binary linguist-generated
+# Явно объявить текстовые файлы, которые нужно всегда нормализовать и преобразовать в LF при проверке.
+*.php text eol=lf
+*.inc text eol=lf
+*.css text eol=lf
+*.js text eol=lf
