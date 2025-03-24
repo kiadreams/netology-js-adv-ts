@@ -1,29 +1,11 @@
-import globals from 'globals';
-import js from '@eslint/js';
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
 
-
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default tseslint.config(
   {
     ignores: ['*.config.*', 'dist/', 'node_modules/', 'coverage/', '.pnp.*']
   },
 
-  {
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-        ...globals.node,
-        ...globals.browser,
-      }
-    },
-  },
-
-  js.configs.recommended,
-
-  {
-    rules: {
-      "no-unused-vars": 'warn',
-      "no-undef": 'warn'
-    },
-  },
-]
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+);

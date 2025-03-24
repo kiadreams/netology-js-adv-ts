@@ -1,11 +1,5 @@
-interface Buyable {
-  id: number,
-  name: string,
-  getInfo(): void,
+export default interface Buyable {
+  readonly id: number,
+  readonly name: string,
   readonly price: number,
-  discount?: number,
-};
-
-function addToCart(item: Buyable): void {
-  // TODO:
 }
