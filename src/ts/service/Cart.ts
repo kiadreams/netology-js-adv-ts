@@ -1,5 +1,4 @@
 import Buyable from "../domain/Buyable";
-import Multipliable from "../domain/Multipliable";
 
 
 export default class Cart {
@@ -10,40 +9,28 @@ export default class Cart {
   }
 
   add(item: Buyable): void {
-    const currentItem = this._items.find(value => value.id === item.id);
-    if (currentItem !== undefined && this.isItemMultipliable(currentItem)) {
-      currentItem.numberOfItems++;
-    } else if (currentItem === undefined) {
+    if (item.isSupportingAdding) {
       this._items.push(item);
+    } else {
+      const currentItem = this._items.find(value => value.id === item.id);
+      if (currentItem === undefined) {
+        this._items.push(item);
+      }
     }
   }
 
   deleteItem(id: number): void {
-    const currentItem = this._items.find(item => item.id === id);
-    if (currentItem === undefined) {
-      return;
-    } else if (this.isItemMultipliable(currentItem) && currentItem.numberOfItems > 1) {
-      currentItem.numberOfItems--;
-      return;
+    const index: number = this._items.findIndex(value => value.id === id);
+    if (index >= 0) {
+      this._items.splice(index, 1);
     }
-    this._items = this._items.filter(item => item.id !== id);
   }
 
   totalPrice(): number {
-    return this._items.reduce(
-      (partialSum: number, item) => {
-        partialSum += this.isItemMultipliable(item) ? item.numberOfItems * item.price : item.price;
-        return partialSum;
-      },
-      0
-    )
+    return this._items.reduce((partialSum: number, item: Buyable): number => partialSum + item.price, 0);
   }
 
   totalDiscountedPrice(discount: number): number {
     return this.totalPrice() * (1 - discount / 100);
-  }
-
-  private isItemMultipliable(item: Buyable | Multipliable): item is Multipliable {
-    return (item as Multipliable).numberOfItems !== undefined;
   }
 }
